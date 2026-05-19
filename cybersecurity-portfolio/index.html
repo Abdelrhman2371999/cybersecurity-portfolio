@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Abdelrhman Hamed — Cybersecurity & Network Security Consultant. F5, Palo Alto, Kaspersky, Cisco, AWS certified." />
+  <meta name="theme-color" content="#020510" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abdelrhman Hamed | Cybersecurity Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg: #020510;
+      --bg1: #060d1f;
+      --bg2: #0a1428;
+      --card: rgba(10,20,42,0.85);
+      --border: rgba(0,210,255,0.12);
+      --border2: rgba(0,210,255,0.25);
+      --cyan: #00d2ff;
+      --violet: #7c3aed;
+      --violet2: #a78bfa;
+      --green: #00ffa3;
+      --text: #e8f4ff;
+      --muted: #6b8ab5;
+      --glow: 0 0 30px rgba(0,210,255,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS BACKGROUND ── */
+    #bg-canvas {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events: none; z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── LAYOUT ── */
+    .shell {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════
+       SIDEBAR
+    ══════════════════════════════ */
+    .sidebar {
+      position: sticky; top: 0; height: 100vh;
+      overflow-y: auto;
+      padding: 2.5rem 1.6rem;
+      background: linear-gradient(180deg, rgba(6,13,31,0.96) 0%, rgba(3,7,18,0.96) 100%);
+      border-right: 1px solid var(--border2);
+      display: flex; flex-direction: column; gap: 2rem;
+      backdrop-filter: blur(12px);
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #1a2a4a; border-radius: 4px; }
+
+    /* Avatar */
+    .avatar-ring {
+      width: 130px; height: 130px;
+      margin: 0 auto;
+      border-radius: 50%;
+      padding: 3px;
+      background: conic-gradient(from 0deg, var(--cyan), var(--violet), var(--green), var(--cyan));
+      animation: spinRing 4s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spinRing { to { transform: rotate(360deg); } }
+    .avatar-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--bg1);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem; font-weight: 800;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      overflow: hidden;
+    }
+    .avatar-inner img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+
+    /* Name & role */
+    .s-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 800;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 0%, #a8d8ff 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      line-height: 1.2;
+    }
+    .s-role {
+      text-align: center; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0,210,255,0.08);
+      border: 1px solid rgba(0,210,255,0.2);
+      border-radius: 30px; padding: 0.35rem 0.9rem;
+      width: fit-content; margin: 0 auto;
+    }
+
+    /* Status badge */
+    .s-status {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; color: var(--green);
+      background: rgba(0,255,163,0.06);
+      border: 1px solid rgba(0,255,163,0.2);
+      border-radius: 30px; padding: 0.35rem 0.9rem;
+      width: fit-content; margin: 0 auto;
+    }
+    .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      animation: pulseDot 1.8s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%,100% { box-shadow: 0 0 0 0 rgba(0,255,163,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(0,255,163,0); }
+    }
+
+    /* Contact */
+    .s-section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+    }
+    .contact-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .contact-item i { width: 20px; color: var(--cyan); font-size: 0.85rem; }
+    .contact-item a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .contact-item a:hover { color: var(--cyan); }
+    .phone-numbers { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
+    .phone-numbers span { display: block; }
+
+    /* Cert badges sidebar */
+    .cert-scroll { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .cert-pill {
+      font-size: 0.65rem; font-weight: 600;
+      padding: 0.25rem 0.65rem; border-radius: 20px;
+      border: 1px solid rgba(0,210,255,0.25);
+      color: var(--cyan);
+      background: rgba(0,210,255,0.05);
+    }
+
+    /* Stats */
+    .s-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .stat-box {
+      background: rgba(0,210,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 0.75rem;
+      text-align: center; transition: border-color 0.25s, transform 0.25s;
+    }
+    .stat-box:hover { border-color: var(--cyan); transform: translateY(-2px); }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--violet2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .stat-label { font-size: 0.65rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.1rem; }
+
+    /* ══════════════════════════════
+       MAIN
+    ══════════════════════════════ */
+    .main {
+      padding: 2.5rem 2.8rem;
+      overflow-x: hidden;
+    }
+
+    /* Hero summary */
+    .hero-banner {
+      position: relative; overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border2);
+      border-radius: 24px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 2.2rem;
+    }
+    .hero-banner::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--green), var(--cyan));
+      background-size: 300% 100%;
+      animation: gradientSlide 3s linear infinite;
+    }
+    @keyframes gradientSlide { to { background-position: 300% 0; } }
+    .hero-banner::after {
+      content: '</>';
+      position: absolute; right: 2rem; bottom: 1rem;
+      font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800;
+      color: rgba(0,210,255,0.04); line-height: 1;
+    }
+    .hero-banner h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 800;
+      color: var(--cyan); margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .hero-banner p { font-size: 0.88rem; color: #8ba8cc; line-height: 1.75; }
+    .hero-banner p + p { margin-top: 0.75rem; }
+
+    /* ── TABS ── */
+    .tabs-nav {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+      background: rgba(10,20,42,0.6);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 0.45rem;
+      backdrop-filter: blur(8px);
+    }
+    .tab-btn {
+      flex: 1; min-width: 110px;
+      background: transparent; border: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--muted); cursor: pointer;
+      padding: 0.65rem 1rem; border-radius: 12px;
+      transition: all 0.25s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(0,210,255,0.05); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(0,210,255,0.15), rgba(124,58,237,0.1));
+      color: var(--cyan);
+      border: 1px solid rgba(0,210,255,0.25);
+      box-shadow: 0 4px 15px rgba(0,210,255,0.1);
+    }
+    .tab-panel { display: none; animation: fadeUp 0.35s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── GRID ── */
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.4rem;
+    }
+
+    /* ── CARDS ── */
+    .neo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 1.6rem;
+      transition: all 0.3s cubic-bezier(0.2,0,0,1);
+      position: relative; overflow: hidden;
+    }
+    .neo-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,210,255,0.04), transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .neo-card:hover { border-color: rgba(0,210,255,0.35); transform: translateY(-5px); box-shadow: 0 24px 40px rgba(0,0,0,0.4), var(--glow); }
+    .neo-card:hover::before { opacity: 1; }
+
+    /* Card parts */
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,210,255,0.12), rgba(124,58,237,0.12));
+      border: 1px solid rgba(0,210,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--cyan); margin-bottom: 1rem;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: #daeeff; margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+    .card-company {
+      font-size: 0.77rem; color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .date-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(20,35,65,0.9);
+      border: 1px solid rgba(0,210,255,0.1);
+      padding: 0.2rem 0.7rem; border-radius: 20px;
+      font-size: 0.67rem; color: #7a9cc8; font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .card-divider { border: none; border-top: 1px solid rgba(0,210,255,0.08); margin: 0.9rem 0; }
+
+    .list-bullet { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .list-bullet li {
+      font-size: 0.82rem; color: #8dafd0;
+      display: flex; gap: 0.6rem; align-items: flex-start;
+    }
+    .list-bullet li i { color: var(--cyan); font-size: 0.65rem; margin-top: 0.35rem; flex-shrink: 0; }
+
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.9rem; }
+    .tag {
+      font-size: 0.68rem; font-weight: 600;
+      padding: 0.28rem 0.75rem; border-radius: 20px;
+      border: 1px solid rgba(0,210,255,0.2);
+      color: var(--cyan); background: rgba(0,210,255,0.05);
+      transition: all 0.2s;
+    }
+    .tag:hover { background: rgba(0,210,255,0.12); border-color: var(--cyan); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.76rem; font-weight: 700;
+      padding: 0.5rem 1.1rem; border-radius: 30px;
+      text-decoration: none; cursor: pointer;
+      transition: all 0.22s; margin-top: 1rem; margin-right: 0.4rem;
+    }
+    .btn-primary {
+      background: rgba(0,210,255,0.1);
+      border: 1px solid var(--cyan); color: var(--cyan);
+    }
+    .btn-primary:hover { background: var(--cyan); color: #020510; }
+    .btn-secondary {
+      background: rgba(124,58,237,0.1);
+      border: 1px solid var(--violet2); color: var(--violet2);
+    }
+    .btn-secondary:hover { background: var(--violet); color: #fff; border-color: var(--violet); }
+
+    /* Cert badges */
+    .cert-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .cert-badge {
+      font-size: 0.7rem; font-weight: 700;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0,210,255,0.08), rgba(124,58,237,0.08));
+      border: 1px solid rgba(0,210,255,0.25); color: var(--cyan);
+      transition: all 0.2s;
+    }
+    .cert-badge:hover { border-color: var(--cyan); background: rgba(0,210,255,0.12); transform: scale(1.03); }
+    .cert-badge.in-progress { border-color: rgba(167,139,250,0.4); color: var(--violet2); }
+
+    /* Section label */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--cyan);
+      margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* Resource card extra */
+    .guide-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; font-weight: 600; }
+
+    /* Teaching / social */
+    .social-proof {
+      display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.75rem;
+      font-size: 0.73rem; color: var(--muted);
+    }
+    .social-proof span { display: flex; align-items: center; gap: 0.3rem; }
+    .social-proof i { color: var(--cyan); }
+
+    /* Teaching image gallery */
+    .teaching-gallery {
+      display: flex; flex-wrap: wrap; gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    .teaching-img {
+      width: 90px; height: 90px; object-fit: cover;
+      border-radius: 16px; border: 1px solid var(--border2);
+      transition: all 0.2s; cursor: pointer;
+    }
+    .teaching-img:hover { transform: scale(1.05); border-color: var(--cyan); }
+
+    /* Skill bars */
+    .skill-row { margin-bottom: 0.8rem; }
+    .skill-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: #8dafd0; margin-bottom: 0.3rem; }
+    .skill-bar { height: 5px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; }
+    .skill-fill {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet2));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 1s cubic-bezier(0.2,0,0,1);
+    }
+    .skill-fill.animate { transform: scaleX(1); }
+
+    /* Timeline dot */
+    .timeline-dot {
+      position: absolute; top: 1.6rem; right: 1.6rem;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+    }
+
+    /* Quote block */
+    .quote-block {
+      border-left: 3px solid var(--cyan);
+      padding: 0.75rem 1rem;
+      background: rgba(0,210,255,0.04);
+      border-radius: 0 12px 12px 0;
+      font-size: 0.82rem; color: #8dafd0; font-style: italic;
+      margin: 0.75rem 0;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #1a2a4a; border-radius: 5px; }
+
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .main { padding: 1.6rem; }
+      .grid-two { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<div class="shell">
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div>
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <img src="./profile.jpg" alt="Abdelrhman Hamed" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="s-name">ABDELRHMAN<br>HAMED</div>
+    </div>
+
+    <div class="s-role"><i class="fas fa-shield-halved"></i> &nbsp; Cybersecurity Consultant</div>
+
+    <div class="s-status">
+      <div class="pulse-dot"></div> Open to Opportunities
+    </div>
+
+    <!-- Stats -->
+    <div class="s-stats">
+      <div class="stat-box">
+        <div class="stat-num">9+</div>
+        <div class="stat-label">Certifications</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Years Exp.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Students</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Roles</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="s-section-label">Contact</div>
+      <div class="contact-list">
+        <div class="contact-item"><i class="fas fa-location-dot"></i><span>New Cairo, Egypt</span></div>
+        <div class="contact-item"><i class="fas fa-phone-alt"></i><div class="phone-numbers"><span>+20 112 693 2378</span><span>+20 105 555 9837</span></div></div>
+        <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:abdelrhmanhamedmousaa@gmail.com">abdelrhmanhamedmousaa@gmail.com</a></div>
+        <div class="contact-item"><i class="fab fa-linkedin"></i><a href="https://linkedin.com/in/abdelrhmanhamed" target="_blank">linkedin.com/in/abdelrhmanhamed</a></div>
+        <div class="contact-item"><i class="fab fa-github"></i><a href="https://github.com/Abdelrhman2371999" target="_blank">github.com/Abdelrhman2371999</a></div>
+        <div class="contact-item"><i class="fab fa-youtube"></i><a href="#">@Cyber_bytes_01</a></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="s-section-label">Core Certifications</div>
+      <div class="cert-scroll">
+        <span class="cert-pill">PCNSE</span>
+        <span class="cert-pill">F5-CTS LTM</span>
+        <span class="cert-pill">F5-CA</span>
+        <span class="cert-pill">KL-044</span>
+        <span class="cert-pill">CCNA</span>
+        <span class="cert-pill">CyberOps</span>
+        <span class="cert-pill">AWS Sec</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero-banner">
+      <h1><i class="fas fa-terminal"></i> Professional Profile</h1>
+      <p>Cybersecurity & Network Security Engineer at <strong style="color:#daeeff;">Mideast Communication Systems (MCS)</strong>, specializing in Next-Generation Firewall solutions, Nginx Plus, and advanced container security. Designing defense strategies that protect infrastructures, optimize performance, and ensure business continuity through secure, high-availability architectures.</p>
+      <p>Palo Alto Networks PCNSE, F5-Certified Administrator, and Kaspersky Container Security (KL-044) certified — delivering scalable, resilient solutions that support digital transformation. Also active as an instructor, bridging theory and practice in Python and cybersecurity.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab(event,'experience')"><i class="fas fa-briefcase"></i> Experience</button>
+      <button class="tab-btn" onclick="switchTab(event,'education')"><i class="fas fa-graduation-cap"></i> Education & Certs</button>
+      <button class="tab-btn" onclick="switchTab(event,'skills')"><i class="fas fa-microchip"></i> Skills</button>
+      <button class="tab-btn" onclick="switchTab(event,'resources')"><i class="fas fa-book-open"></i> Guides</button>
+      <button class="tab-btn" onclick="switchTab(event,'teaching')"><i class="fas fa-chalkboard-user"></i> Impact</button>
+    </div>
+
+    <!-- ── EXPERIENCE ── -->
+    <div id="experience" class="tab-panel active">
+      <div class="section-label"><i class="fas fa-briefcase"></i> Work History</div>
+      <div class="grid-two">
+        <!-- MCS Technical Consultant -->
+        <div class="neo-card">
+          <div class="timeline-dot"></div>
+          <div class="card-icon"><i class="fas fa-shield-halved"></i></div>
+          <div class="card-title">Technical Consultant</div>
+          <div class="card-company">Mideast Communication Systems (MCS) · Full-time</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> May 2025 – Present · 1 yr+</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Assessing and securing IT infrastructures against evolving cyber threats.</li>
+            <li><i class="fas fa-circle"></i>Implementing tailored cybersecurity strategies to ensure compliance and protect sensitive data.</li>
+            <li><i class="fas fa-circle"></i>Analyzing vulnerabilities and advising organizations on best-practice defenses.</li>
+            <li><i class="fas fa-circle"></i>Collaborating with clients to support business continuity and strengthen posture.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">NGFW</span><span class="tag">F5 BIG-IP</span><span class="tag">NGINX Plus</span><span class="tag">Container Security</span>
+          </div>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
+          <div class="card-title">Network Security Trainee</div>
+          <div class="card-company">Mideast Communication Systems (MCS) · Internship</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> Nov 2024 – Apr 2025 · 6 mos</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Comprehensive training covering networking, Linux/Windows admin, ethical hacking, and scripting.</li>
+            <li><i class="fas fa-circle"></i>Specialized in F5 BIG-IP and Palo Alto (PCNSE) advanced topics.</li>
+            <li><i class="fas fa-circle"></i>Practical skills in web gateway administration and security fundamentals.</li>
+          </ul>
+          <div class="tags"><span class="tag">Troubleshooting</span><span class="tag">Network Virtualization</span></div>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fab fa-python"></i></div>
+          <div class="card-title">Python Programming Instructor</div>
+          <div class="card-company">Maadi Library · Part-time</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> May 2025 – Oct 2025 · 6 mos</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Delivered engaging Python sessions for beginner and intermediate learners.</li>
+            <li><i class="fas fa-circle"></i>Simplified complex concepts through project-based, practical learning.</li>
+            <li><i class="fas fa-circle"></i>Empowered students to automate tasks and foster a problem-solving mindset.</li>
+          </ul>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-chalkboard-user"></i></div>
+          <div class="card-title">Instructor L2 & L3 Cyber</div>
+          <div class="card-company">Digital Egypt Cubs Initiative (DECI) · Part-time</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> Dec 2024 – May 2025 · 6 mos</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Teaching secure coding, ethical hacking, and network security.</li>
+            <li><i class="fas fa-circle"></i>Guiding students through real-world projects and certifications.</li>
+            <li><i class="fas fa-circle"></i>Equipping learners with practical IT skills for modern careers.</li>
+          </ul>
+          <div class="tags"><span class="tag">Programming</span><span class="tag">Cybersecurity</span></div>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-network-wired"></i></div>
+          <div class="card-title">Cisco Cybersecurity Engineer</div>
+          <div class="card-company">Digital Egypt Pioneers Initiative (DEPI) · Internship</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> Apr 2024 – Nov 2024 · 8 mos</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Cisco CCNA Routing & Switching — networking, routing, switching, IP services, security, automation.</li>
+            <li><i class="fas fa-circle"></i>Cisco CyberOps Associate — security monitoring, threat detection, incident response for SOC analysts.</li>
+          </ul>
+          <div class="tags"><span class="tag">CyberOps</span><span class="tag">SOC</span><span class="tag">Network Security</span></div>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-microchip"></i></div>
+          <div class="card-title">Embedded System Engineer</div>
+          <div class="card-company">Information Technology Institute (ITI) · Internship</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> May 2023 – Aug 2023 · 4 mos</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Trained in Embedded System Software (ARM) — ARM Cortex microcontrollers.</li>
+            <li><i class="fas fa-circle"></i>Knowledge of RTOS and application development.</li>
+            <li><i class="fas fa-circle"></i>Skilled in Python, integration, and debugging.</li>
+          </ul>
+          <div class="tags"><span class="tag">C Programming</span><span class="tag">Python</span><span class="tag">RTOS</span><span class="tag">ARM</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EDUCATION & CERTS ── -->
+    <div id="education" class="tab-panel">
+      <div class="section-label"><i class="fas fa-graduation-cap"></i> Education & Certifications</div>
+      <div class="grid-two">
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-university"></i></div>
+          <div class="card-title">B.Sc. Electronics & Communication Engineering</div>
+          <div class="card-company">Al Madina High Institute for Engineering & Technology</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> Sep 2017 – Jun 2022</div>
+          <hr class="card-divider">
+          <p style="font-size:0.82rem; color:var(--muted);">Grade: Good (C+)</p>
+          <p style="font-size:0.82rem; color:var(--muted); margin-top:0.4rem;">Graduation Project: <strong style="color:#8dafd0;">Level-3 Autonomous Automotive Car</strong> with Embedded System Software — <span style="color:var(--green);">Summa Cum Laude</span></p>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-certificate"></i></div>
+          <div class="card-title">Professional Certifications</div>
+          <hr class="card-divider">
+          <div class="cert-grid">
+            <span class="cert-badge">F5-CTS BIG-IP LTM</span>
+            <span class="cert-badge">F5-CA BIG-IP Admin</span>
+            <span class="cert-badge">PCNSE (Palo Alto NGFW)</span>
+            <span class="cert-badge">KL-044 Container Security</span>
+            <span class="cert-badge">Cisco CCNA 200-301</span>
+            <span class="cert-badge">Cisco CyberOps 200-201</span>
+            <span class="cert-badge in-progress">AWS Security ↗ In Progress</span>
+            <span class="cert-badge in-progress">CISSP Readiness ↗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SKILLS ── -->
+    <div id="skills" class="tab-panel">
+      <div class="section-label"><i class="fas fa-microchip"></i> Technical Skills</div>
+      <div class="grid-two">
+        <div class="neo-card">
+          <div class="card-title" style="margin-bottom:1.2rem;">Security & Networking</div>
+          <div class="skill-row"><div class="skill-label"><span>Palo Alto NGFW / PCNSE</span><span>95%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.95"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>F5 BIG-IP LTM/GTM</span><span>92%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.92"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>NGINX Plus</span><span>85%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.85"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>Cisco CCNA / CyberOps</span><span>88%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.88"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>Vulnerability Assessment</span><span>88%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.88"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>Incident Response</span><span>84%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.84"></div></div></div>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-title" style="margin-bottom:1.2rem;">Dev & Cloud</div>
+          <div class="skill-row"><div class="skill-label"><span>Python Security Tooling</span><span>88%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.88"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>Bash / PowerShell</span><span>80%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.80"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>Container Security (KL-044)</span><span>85%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.85"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>AWS Security</span><span>70%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.70"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>DevSecOps</span><span>75%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.75"></div></div></div>
+          <div class="skill-row"><div class="skill-label"><span>REST APIs</span><span>72%</span></div><div class="skill-bar"><div class="skill-fill" style="--w:0.72"></div></div></div>
+        </div>
+
+        <div class="neo-card" style="grid-column: 1 / -1;">
+          <div class="card-title" style="margin-bottom:1rem;">Technology Stack</div>
+          <div class="tags">
+            <span class="tag">Palo Alto NGFW</span><span class="tag">F5 BIG-IP LTM</span><span class="tag">F5 BIG-IP GTM</span>
+            <span class="tag">NGINX Plus</span><span class="tag">Python</span><span class="tag">Bash</span>
+            <span class="tag">PowerShell</span><span class="tag">OWASP Top 10</span><span class="tag">DNSSEC</span>
+            <span class="tag">iRules</span><span class="tag">SNAT</span><span class="tag">VPN / NAT</span>
+            <span class="tag">Threat Detection</span><span class="tag">SOC Analysis</span><span class="tag">Kaspersky KSC</span>
+            <span class="tag">Docker Security</span><span class="tag">Embedded C</span><span class="tag">ARM Cortex</span>
+            <span class="tag">RTOS</span><span class="tag">tcpdump</span><span class="tag">Wireshark</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RESOURCES ── -->
+    <div id="resources" class="tab-panel">
+      <div class="section-label"><i class="fas fa-book-open"></i> Technical Guides</div>
+      <div class="grid-two">
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-globe"></i></div>
+          <div class="card-title">F5 BIG-IP DNS (GTM)</div>
+          <div class="guide-meta">Complete Reference Guide · 20+ pages</div>
+          <div class="tags"><span class="tag">DNSSEC</span><span class="tag">iRules</span><span class="tag">Disaster Recovery</span><span class="tag">DDoS Protection</span></div>
+          <a href="./Docs/GTM.pdf" class="btn btn-primary" download><i class="fas fa-download"></i> Download GTM.pdf</a>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-server"></i></div>
+          <div class="card-title">F5 BIG-IP LTM</div>
+          <div class="guide-meta">Load Balancing & Application Delivery</div>
+          <div class="tags"><span class="tag">Full/Forward Proxy</span><span class="tag">One-Arm / Two-Arm</span><span class="tag">SNAT</span><span class="tag">tcpdump</span></div>
+          <a href="./Docs/LTM.pdf" class="btn btn-primary" download><i class="fas fa-download"></i> Download LTM.pdf</a>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-firewall"></i></div>
+          <div class="card-title">Palo Alto NGFW Lab Guide</div>
+          <div class="guide-meta">Hands-on Lab Setup · 14+ pages</div>
+          <div class="tags"><span class="tag">NAT</span><span class="tag">VPN</span><span class="tag">Access Control</span><span class="tag">Security Policies</span></div>
+          <a href="./Docs/NGFW.pdf" class="btn btn-primary" download><i class="fas fa-download"></i> Download NGFW.pdf</a>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fab fa-linux"></i></div>
+          <div class="card-title">Linux System Administration</div>
+          <div class="guide-meta">Red Hat — Complete Notion Notes</div>
+          <div class="tags"><span class="tag">File Hierarchy</span><span class="tag">User Management</span><span class="tag">Permissions</span><span class="tag">vi Editor</span></div>
+          <a href="https://gray-time-3bb.notion.site/Linux-19ee5a3cbcd480c58067e78631280be8?pvs=74" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i> Open Notion Notes</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TEACHING / IMPACT ── -->
+    <div id="teaching" class="tab-panel">
+      <div class="section-label"><i class="fas fa-star"></i> Teaching Impact</div>
+      <div class="grid-two">
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-trophy"></i></div>
+          <div class="card-title">Xpand CS Academy</div>
+          <div class="card-company">Official Appreciation — Mohamed Metwaly & Amr Faisal Al Araby</div>
+          <hr class="card-divider">
+          <div class="quote-block">"Thank you for the wonderful hands-on projects you designed... Without your contribution, these projects wouldn't exist."</div>
+          <div class="social-proof"><span><i class="fas fa-heart"></i> 30+ likes</span></div>
+          <div class="teaching-gallery">
+            <img src="./instructor_image/Xpand/1764755609713.jpg" class="teaching-img" alt="Xpand appreciation" onerror="this.style.display='none'">
+          </div>
+          <a href="https://www.linkedin.com/posts/abdelrhmanhamed_xpandcs-cybersecurity-careerjourney-activity-7402270445095297043-7WQ-" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> View Post</a>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div class="card-title">DECI & Udacity Instructor</div>
+          <div class="card-company">Digital Egypt Cubs Initiative · almentor Company</div>
+          <hr class="card-divider">
+          <p style="font-size:0.82rem; color:var(--muted);">Cybersecurity session completion, mentoring students through real-world security challenges.</p>
+          <div class="social-proof">
+            <span><i class="fas fa-eye"></i> 928 impressions</span>
+            <span><i class="fas fa-thumbs-up"></i> 25+ reactions</span>
+          </div>
+          <div class="teaching-gallery">
+            <img src="./instructor_image/Cybersecurity%20DECI/1jpg.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Cybersecurity%20DECI/1742050173962.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Cybersecurity%20DECI/1742050175932.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Cybersecurity%20DECI/1742050177415.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Cybersecurity%20DECI/1746901342059.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Cybersecurity%20DECI/1746901344100.jpg" class="teaching-img" onerror="this.style.display='none'">
+          </div>
+          <a href="https://www.linkedin.com/posts/abdelrhmanhamed_cybersecurity-teaching-mentorship-activity-7327035303284596737-txzi" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> DECI Post</a>
+          <a href="https://www.linkedin.com/posts/abdelrhmanhamed_cybersecurity-instructor-udacity-activity-7306688036489060352-QuQq" class="btn btn-primary" target="_blank"><i class="fab fa-linkedin"></i> Udacity Journey</a>
+        </div>
+
+        <div class="neo-card">
+          <div class="card-icon"><i class="fab fa-python"></i></div>
+          <div class="card-title">Python Programming Instructor</div>
+          <div class="card-company">Maadi Library · Teaching coding to beginners</div>
+          <hr class="card-divider">
+          <div class="social-proof">
+            <span><i class="fas fa-chart-line"></i> 1,976 impressions</span>
+            <span><i class="fas fa-comment"></i> 50 comments</span>
+          </div>
+          <div class="teaching-gallery">
+            <img src="./instructor_image/Python/1750569681639.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Python/1750569682178.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Python/1750569689582.jpg" class="teaching-img" onerror="this.style.display='none'">
+            <img src="./instructor_image/Python/1750569690698.jpg" class="teaching-img" onerror="this.style.display='none'">
+          </div>
+          <a href="https://www.linkedin.com/in/abdelrhmanhamed/recent-activity/all/" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Activity</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function switchTab(e, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if (id === 'skills') animateSkills();
+}
+
+function animateSkills() {
+  setTimeout(() => {
+    document.querySelectorAll('.skill-fill').forEach(el => {
+      el.classList.add('animate');
+      const w = parseFloat(el.style.getPropertyValue('--w'));
+      el.style.transform = `scaleX(${w})`;
+    });
+  }, 80);
+}
+
+// Mouse glow effect
+document.querySelectorAll('.neo-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+    card.style.setProperty('--mx', x + '%');
+    card.style.setProperty('--my', y + '%');
+  });
+});
+
+// Particle canvas
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.2 + 0.3;
+    this.vx = (Math.random() - 0.5) * 0.2;
+    this.vy = (Math.random() - 0.5) * 0.2;
+    this.alpha = Math.random() * 0.4 + 0.05;
+    this.color = Math.random() > 0.6 ? '0,210,255' : '124,58,237';
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function drawLines() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 90) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0,210,255,${0.05 * (1 - dist/90)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawLines();
+  requestAnimationFrame(loop);
+}
+loop();
+
+// Avatar image fallback
+const avatarImg = document.querySelector('.avatar-inner img');
+if (avatarImg) {
+  avatarImg.addEventListener('error', function() {
+    this.style.display = 'none';
+    const fallback = document.getElementById('avatar-fallback');
+    if (fallback) fallback.style.display = 'flex';
+  });
+}
+
+// Card entrance animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }, i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.neo-card').forEach(card => {
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(20px)';
+  card.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, box-shadow 0.3s';
+  observer.observe(card);
+});
+</script>
+</body>
+</html>
