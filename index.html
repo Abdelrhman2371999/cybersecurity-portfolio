@@ -55,7 +55,7 @@
     }
 
     /* ══════════════════════════════
-       SIDEBAR
+       SIDEBAR — FIXED/STICKY
     ══════════════════════════════ */
     .sidebar {
       position: sticky; top: 0; height: 100vh;
@@ -65,21 +65,22 @@
       border-right: 1px solid var(--border2);
       display: flex; flex-direction: column; gap: 2rem;
       backdrop-filter: blur(12px);
+      /* Ensure it stays fixed relative to viewport */
+      align-self: start;
     }
     .sidebar::-webkit-scrollbar { width: 4px; }
     .sidebar::-webkit-scrollbar-thumb { background: #1a2a4a; border-radius: 4px; }
 
-    /* Avatar */
+    /* Avatar — NO spinning animation */
     .avatar-ring {
       width: 130px; height: 130px;
       margin: 0 auto;
       border-radius: 50%;
       padding: 3px;
       background: conic-gradient(from 0deg, var(--cyan), var(--violet), var(--green), var(--cyan));
-      animation: spinRing 4s linear infinite;
+      /* animation REMOVED — static ring */
       flex-shrink: 0;
     }
-    @keyframes spinRing { to { transform: rotate(360deg); } }
     .avatar-inner {
       width: 100%; height: 100%;
       border-radius: 50%;
@@ -112,7 +113,7 @@
       width: fit-content; margin: 0 auto;
     }
 
-    /* Status badge */
+    /* Status badge — updated text */
     .s-status {
       display: flex; align-items: center; gap: 0.5rem;
       font-size: 0.75rem; color: var(--green);
@@ -120,16 +121,30 @@
       border: 1px solid rgba(0,255,163,0.2);
       border-radius: 30px; padding: 0.35rem 0.9rem;
       width: fit-content; margin: 0 auto;
+      text-align: center;
     }
     .pulse-dot {
       width: 7px; height: 7px; border-radius: 50%;
       background: var(--green);
+      flex-shrink: 0;
       animation: pulseDot 1.8s ease-in-out infinite;
     }
     @keyframes pulseDot {
       0%,100% { box-shadow: 0 0 0 0 rgba(0,255,163,0.5); }
       50% { box-shadow: 0 0 0 6px rgba(0,255,163,0); }
     }
+
+    /* Visitor counter */
+    .visitor-counter {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; color: var(--muted);
+      background: rgba(124,58,237,0.06);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 30px; padding: 0.35rem 0.9rem;
+      width: fit-content; margin: -1rem auto 0;
+    }
+    .visitor-counter i { color: var(--violet2); font-size: 0.75rem; }
+    .visitor-count-num { color: var(--violet2); font-weight: 700; }
 
     /* Contact */
     .s-section-label {
@@ -146,7 +161,8 @@
     .contact-item a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .contact-item a:hover { color: var(--cyan); }
     .phone-numbers { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
-    .phone-numbers span { display: block; }
+    .phone-numbers span { display: block; cursor: pointer; transition: color 0.2s; }
+    .phone-numbers span:hover { color: var(--cyan); }
 
     /* Cert badges sidebar */
     .cert-scroll { display: flex; flex-wrap: wrap; gap: 0.45rem; }
@@ -215,12 +231,12 @@
     .hero-banner p { font-size: 0.88rem; color: #8ba8cc; line-height: 1.75; }
     .hero-banner p + p { margin-top: 0.75rem; }
 
-    /* ── TABS ── */
+    /* ── TABS — cyber purple/violet glow ── */
     .tabs-nav {
       display: flex; gap: 0.5rem; flex-wrap: wrap;
       margin-bottom: 1.8rem;
       background: rgba(10,20,42,0.6);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(124,58,237,0.2);
       border-radius: 18px; padding: 0.45rem;
       backdrop-filter: blur(8px);
     }
@@ -234,12 +250,12 @@
       transition: all 0.25s;
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
-    .tab-btn:hover { color: var(--text); background: rgba(0,210,255,0.05); }
+    .tab-btn:hover { color: var(--violet2); background: rgba(124,58,237,0.08); }
     .tab-btn.active {
-      background: linear-gradient(135deg, rgba(0,210,255,0.15), rgba(124,58,237,0.1));
-      color: var(--cyan);
-      border: 1px solid rgba(0,210,255,0.25);
-      box-shadow: 0 4px 15px rgba(0,210,255,0.1);
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(167,139,250,0.1));
+      color: var(--violet2);
+      border: 1px solid rgba(124,58,237,0.45);
+      box-shadow: 0 4px 18px rgba(124,58,237,0.25), 0 0 8px rgba(167,139,250,0.15);
     }
     .tab-panel { display: none; animation: fadeUp 0.35s ease; }
     .tab-panel.active { display: block; }
@@ -415,20 +431,345 @@
       line-height: 1.6;
     }
 
+    /* ── PHONE POPUP ── */
+    .phone-popup-overlay {
+      position: fixed; inset: 0;
+      background: rgba(2,5,16,0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .phone-popup-overlay.open {
+      opacity: 1; pointer-events: all;
+    }
+    .phone-popup {
+      background: linear-gradient(145deg, #0a1428, #060d1f);
+      border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 24px;
+      padding: 1.8rem 2rem;
+      min-width: 280px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(124,58,237,0.15);
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.3s cubic-bezier(0.2,0,0,1);
+      text-align: center;
+    }
+    .phone-popup-overlay.open .phone-popup {
+      transform: translateY(0) scale(1);
+    }
+    .phone-popup-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0,210,255,0.12), rgba(124,58,237,0.12));
+      border: 1px solid rgba(124,58,237,0.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.3rem; color: var(--violet2);
+    }
+    .phone-popup-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: #daeeff; margin-bottom: 1.4rem;
+    }
+    .popup-actions { display: flex; flex-direction: column; gap: 0.65rem; }
+    .popup-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      padding: 0.7rem 1.2rem; border-radius: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      text-decoration: none; cursor: pointer;
+      border: none; transition: all 0.2s;
+    }
+    .popup-btn-call {
+      background: rgba(0,210,255,0.12);
+      border: 1px solid rgba(0,210,255,0.35);
+      color: var(--cyan);
+    }
+    .popup-btn-call:hover { background: var(--cyan); color: #020510; }
+    .popup-btn-wa {
+      background: rgba(37,211,102,0.1);
+      border: 1px solid rgba(37,211,102,0.35);
+      color: #25d366;
+    }
+    .popup-btn-wa:hover { background: #25d366; color: #020510; }
+    .popup-btn-cancel {
+      background: transparent;
+      border: 1px solid rgba(107,138,181,0.2);
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .popup-btn-cancel:hover { border-color: rgba(107,138,181,0.4); color: var(--text); }
+
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #1a2a4a; border-radius: 5px; }
 
+    /* ══════════════════════════════
+       EXTRA ANIMATIONS
+    ══════════════════════════════ */
+
+    /* Float animation for avatar ring */
+    @keyframes floatAvatar {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .avatar-ring { animation: floatAvatar 4s ease-in-out infinite; }
+
+    /* Shimmer effect on name */
+    @keyframes shimmerName {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .s-name {
+      background: linear-gradient(90deg, #fff 0%, #a8d8ff 30%, #00d2ff 50%, #a78bfa 70%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmerName 4s linear infinite;
+    }
+
+    /* Typing cursor blink on hero h1 */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .hero-banner h1::after {
+      content: '|';
+      margin-left: 4px;
+      color: var(--cyan);
+      animation: blink 1s step-end infinite;
+      font-weight: 300;
+    }
+
+    /* Glow pulse on stat boxes */
+    @keyframes statPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,210,255,0); }
+      50% { box-shadow: 0 0 16px 2px rgba(0,210,255,0.1); }
+    }
+    .stat-box { animation: statPulse 3s ease-in-out infinite; }
+    .stat-box:nth-child(2) { animation-delay: 0.75s; }
+    .stat-box:nth-child(3) { animation-delay: 1.5s; }
+    .stat-box:nth-child(4) { animation-delay: 2.25s; }
+
+    /* Gradient border animation on active tab */
+    @keyframes tabGlow {
+      0%, 100% { box-shadow: 0 4px 18px rgba(124,58,237,0.25), 0 0 8px rgba(167,139,250,0.15); }
+      50% { box-shadow: 0 4px 28px rgba(124,58,237,0.45), 0 0 18px rgba(167,139,250,0.3); }
+    }
+    .tab-btn.active { animation: tabGlow 2.5s ease-in-out infinite; }
+
+    /* Slide-in for sidebar on page load */
+    @keyframes sidebarIn {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .sidebar { animation: sidebarIn 0.7s cubic-bezier(0.2,0,0,1) both; }
+
+    /* Slide-in for main on page load */
+    @keyframes mainIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .main { animation: mainIn 0.7s 0.2s cubic-bezier(0.2,0,0,1) both; }
+
+    /* Hero banner border glow */
+    @keyframes heroBorderGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,210,255,0); }
+      50% { box-shadow: 0 0 30px 4px rgba(0,210,255,0.08), 0 0 60px 8px rgba(124,58,237,0.06); }
+    }
+    .hero-banner { animation: heroBorderGlow 5s ease-in-out infinite; }
+
+    /* Tag hover ripple */
+    .tag { position: relative; overflow: hidden; }
+    .tag::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(0,210,255,0.15);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s ease;
+      border-radius: inherit;
+    }
+    .tag:hover::after { transform: scaleX(1); }
+
+    /* ══════════════════════════════
+       MOBILE LAYOUT — HAMBURGER NAV
+    ══════════════════════════════ */
+
+    /* Mobile top bar */
+    .mobile-topbar {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 58px;
+      background: rgba(6,13,31,0.97);
+      border-bottom: 1px solid var(--border2);
+      backdrop-filter: blur(16px);
+      padding: 0 1.2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mobile-topbar-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--cyan), var(--violet2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .mobile-topbar-role {
+      font-size: 0.62rem; font-weight: 600; color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .hamburger-btn {
+      width: 40px; height: 40px;
+      background: rgba(0,210,255,0.06);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .hamburger-btn:hover { background: rgba(0,210,255,0.12); }
+    .hamburger-btn span {
+      display: block; width: 20px; height: 2px;
+      background: var(--cyan); border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.2,0,0,1);
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile drawer sidebar */
+    .mobile-drawer-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 150;
+      background: rgba(2,5,16,0.7);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .mobile-drawer-overlay.open { opacity: 1; }
+
     @media (max-width: 900px) {
-      .shell { grid-template-columns: 1fr; }
-      .sidebar { position: relative; height: auto; }
-      .main { padding: 1.6rem; }
+      /* Show top bar & drawer */
+      .mobile-topbar { display: flex; }
+      .mobile-drawer-overlay { display: block; pointer-events: none; }
+      .mobile-drawer-overlay.open { pointer-events: all; }
+
+      /* Shell becomes single column, push content below topbar */
+      .shell {
+        grid-template-columns: 1fr;
+        padding-top: 58px;
+      }
+
+      /* Sidebar becomes a slide-in drawer on mobile */
+      .sidebar {
+        position: fixed;
+        top: 58px; left: 0;
+        width: min(300px, 85vw);
+        height: calc(100vh - 58px);
+        z-index: 160;
+        transform: translateX(-105%);
+        transition: transform 0.35s cubic-bezier(0.2,0,0,1);
+        border-right: 1px solid var(--border2);
+        animation: none; /* remove page-load anim on mobile; drawer handles its own */
+        overflow-y: auto;
+        padding: 1.8rem 1.4rem;
+        gap: 1.6rem;
+      }
+      .sidebar.drawer-open {
+        transform: translateX(0);
+        box-shadow: 8px 0 40px rgba(0,0,0,0.6), 0 0 60px rgba(0,210,255,0.06);
+      }
+
+      /* Main content full width */
+      .main {
+        padding: 1.4rem 1rem;
+        animation: mainIn 0.6s 0.1s cubic-bezier(0.2,0,0,1) both;
+      }
+
+      /* Grid single column on small screens */
       .grid-two { grid-template-columns: 1fr; }
+
+      /* Tabs scrollable horizontally */
+      .tabs-nav {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        gap: 0.35rem;
+        padding: 0.4rem;
+        border-radius: 14px;
+      }
+      .tabs-nav::-webkit-scrollbar { display: none; }
+      .tab-btn {
+        min-width: auto;
+        flex: 0 0 auto;
+        padding: 0.55rem 0.85rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+
+      /* Hero banner compact */
+      .hero-banner {
+        padding: 1.4rem 1.2rem;
+        border-radius: 18px;
+        margin-bottom: 1.4rem;
+      }
+      .hero-banner::after { font-size: 3.5rem; right: 1rem; bottom: 0.5rem; }
+      .hero-banner p { font-size: 0.82rem; }
+
+      /* Cards full width */
+      .neo-card { border-radius: 18px; padding: 1.3rem; }
+
+      /* Stats 2x2 grid */
+      .s-stats { gap: 0.55rem; }
+      .stat-num { font-size: 1.4rem; }
+
+      /* Avatar smaller on drawer */
+      .avatar-ring { width: 100px; height: 100px; }
+      .s-name { font-size: 1.15rem; }
+
+      /* Phone popup full-width on mobile */
+      .phone-popup { min-width: unset; width: calc(100vw - 3rem); max-width: 360px; }
+
+      /* Teaching images smaller */
+      .teaching-img { width: 72px; height: 72px; }
+
+      /* Skill bars full width */
+      .skill-row { margin-bottom: 0.65rem; }
+    }
+
+    /* Very small screens */
+    @media (max-width: 420px) {
+      .main { padding: 1rem 0.75rem; }
+      .hero-banner { padding: 1.1rem 1rem; }
+      .tab-btn { font-size: 0.7rem; padding: 0.45rem 0.7rem; }
+      .card-title { font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
+
+<!-- Mobile Top Bar -->
+<div class="mobile-topbar">
+  <div>
+    <div class="mobile-topbar-name">ABDELRHMAN HAMED</div>
+    <div class="mobile-topbar-role"><i class="fas fa-shield-halved"></i> Cybersecurity Consultant</div>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- Mobile Drawer Overlay -->
+<div class="mobile-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- Phone Popup Overlay -->
+<div class="phone-popup-overlay" id="phonePopup" onclick="closePhonePopup(event)">
+  <div class="phone-popup" onclick="event.stopPropagation()">
+    <div class="phone-popup-icon"><i class="fas fa-phone-alt"></i></div>
+    <div class="phone-popup-number" id="popupNumber"></div>
+    <div class="popup-actions">
+      <a class="popup-btn popup-btn-call" id="popupCallBtn" href="#"><i class="fas fa-phone-alt"></i> Call</a>
+      <a class="popup-btn popup-btn-wa" id="popupWaBtn" href="#" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <button class="popup-btn popup-btn-cancel" onclick="closePhonePopup()"><i class="fas fa-times"></i> Cancel</button>
+    </div>
+  </div>
+</div>
 
 <div class="shell">
   <!-- ══════════ SIDEBAR ══════════ -->
@@ -448,7 +789,13 @@
     <div class="s-role"><i class="fas fa-shield-halved"></i> &nbsp; Cybersecurity Consultant</div>
 
     <div class="s-status">
-      <div class="pulse-dot"></div> Open to Opportunities
+      <div class="pulse-dot"></div> Talk to me. Looking for my next adventure. Let's connect!
+    </div>
+
+    <!-- Visitor Counter -->
+    <div class="visitor-counter">
+      <i class="fas fa-eye"></i>
+      <span>Visits: <span class="visitor-count-num" id="visitorCount">0</span></span>
     </div>
 
     <!-- Stats -->
@@ -475,11 +822,17 @@
       <div class="s-section-label">Contact</div>
       <div class="contact-list">
         <div class="contact-item"><i class="fas fa-location-dot"></i><span>New Cairo, Egypt</span></div>
-        <div class="contact-item"><i class="fas fa-phone-alt"></i><div class="phone-numbers"><span>+20 112 693 2378</span><span>+20 105 555 9837</span></div></div>
+        <div class="contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <div class="phone-numbers">
+            <span onclick="openPhonePopup('+20 112 693 2378', '201126932378')">+20 112 693 2378</span>
+            <span onclick="openPhonePopup('+20 105 555 9837', '201055559837')">+20 105 555 9837</span>
+          </div>
+        </div>
         <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:abdelrhmanhamedmousaa@gmail.com">abdelrhmanhamedmousaa@gmail.com</a></div>
         <div class="contact-item"><i class="fab fa-linkedin"></i><a href="https://linkedin.com/in/abdelrhmanhamed" target="_blank">linkedin.com/in/abdelrhmanhamed</a></div>
         <div class="contact-item"><i class="fab fa-github"></i><a href="https://github.com/Abdelrhman2371999" target="_blank">github.com/Abdelrhman2371999</a></div>
-        <div class="contact-item"><i class="fab fa-youtube"></i><a href="#">@Cyber_bytes_01</a></div>
+        <div class="contact-item"><i class="fab fa-youtube"></i><a href="https://www.youtube.com/@Cyber_bytes_01" target="_blank">@Cyber_bytes_01</a></div>
       </div>
     </div>
 
@@ -514,6 +867,7 @@
       <button class="tab-btn" onclick="switchTab(event,'skills')"><i class="fas fa-microchip"></i> Skills</button>
       <button class="tab-btn" onclick="switchTab(event,'resources')"><i class="fas fa-book-open"></i> Guides</button>
       <button class="tab-btn" onclick="switchTab(event,'teaching')"><i class="fas fa-chalkboard-user"></i> Impact</button>
+      <button class="tab-btn" onclick="switchTab(event,'projects')"><i class="fas fa-flask"></i> Projects</button>
     </div>
 
     <!-- ── EXPERIENCE ── -->
@@ -683,6 +1037,14 @@
     <!-- ── RESOURCES ── -->
     <div id="resources" class="tab-panel">
       <div class="section-label"><i class="fas fa-book-open"></i> Technical Guides</div>
+
+      <!-- View LinkedIn Posts button -->
+      <div style="margin-bottom: 1.4rem;">
+        <a href="https://www.linkedin.com/in/abdelrhmanhamed/recent-activity/all/" target="_blank" class="btn btn-secondary" style="margin-top: 0;">
+          <i class="fab fa-linkedin"></i> View LinkedIn Posts
+        </a>
+      </div>
+
       <div class="grid-two">
         <div class="neo-card">
           <div class="card-icon"><i class="fas fa-globe"></i></div>
@@ -690,6 +1052,7 @@
           <div class="guide-meta">Complete Reference Guide · 20+ pages</div>
           <div class="tags"><span class="tag">DNSSEC</span><span class="tag">iRules</span><span class="tag">Disaster Recovery</span><span class="tag">DDoS Protection</span></div>
           <a href="./Docs/GTM.pdf" class="btn btn-primary" download><i class="fas fa-download"></i> Download GTM.pdf</a>
+          <a href="https://www.linkedin.com/posts/abdelrhmanhamed_gtm-ugcPost-7439233421924712448-e_eg/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADaOiVsBdkefnWppj-_0zv4nJWB4kiLGryY" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Post</a>
         </div>
 
         <div class="neo-card">
@@ -698,6 +1061,7 @@
           <div class="guide-meta">Load Balancing & Application Delivery</div>
           <div class="tags"><span class="tag">Full/Forward Proxy</span><span class="tag">One-Arm / Two-Arm</span><span class="tag">SNAT</span><span class="tag">tcpdump</span></div>
           <a href="./Docs/LTM.pdf" class="btn btn-primary" download><i class="fas fa-download"></i> Download LTM.pdf</a>
+          <a href="https://www.linkedin.com/posts/abdelrhmanhamed_ltm-overview-ugcPost-7439003269378617344-65Gh/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADaOiVsBdkefnWppj-_0zv4nJWB4kiLGryY" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Post</a>
         </div>
 
         <div class="neo-card">
@@ -706,6 +1070,7 @@
           <div class="guide-meta">Hands-on Lab Setup · 14+ pages</div>
           <div class="tags"><span class="tag">NAT</span><span class="tag">VPN</span><span class="tag">Access Control</span><span class="tag">Security Policies</span></div>
           <a href="./Docs/NGFW.pdf" class="btn btn-primary" download><i class="fas fa-download"></i> Download NGFW.pdf</a>
+          <a href="https://www.linkedin.com/posts/abdelrhmanhamed_palo-alto-ugcPost-7311768035810316288-D0J5/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADaOiVsBdkefnWppj-_0zv4nJWB4kiLGryY" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Post</a>
         </div>
 
         <div class="neo-card">
@@ -777,10 +1142,203 @@
       </div>
     </div>
 
+    <!-- ── PROJECTS ── -->
+    <div id="projects" class="tab-panel">
+      <div class="section-label"><i class="fas fa-flask"></i> Projects & Labs</div>
+
+      <!-- Call-to-action banner -->
+      <div style="background: rgba(124,58,237,0.07); border: 1px solid rgba(124,58,237,0.25); border-radius: 18px; padding: 1.1rem 1.4rem; margin-bottom: 1.6rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+        <div style="flex:1; min-width:200px;">
+          <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; color:var(--violet2); margin-bottom:0.2rem;"><i class="fab fa-github"></i> &nbsp;All source code on GitHub</div>
+          <div style="font-size:0.75rem; color:var(--muted);">Hands-on labs, automation scripts, and security tools built from real-world experience.</div>
+        </div>
+        <a href="https://github.com/Abdelrhman2371999" target="_blank" class="btn btn-secondary" style="margin:0; flex-shrink:0;"><i class="fab fa-github"></i> View GitHub Profile</a>
+      </div>
+
+      <div class="grid-two">
+
+        <!-- Project 1 — NGFW Automation -->
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-robot"></i></div>
+          <div class="card-title">Palo Alto NGFW Lab Automation</div>
+          <div class="card-company">Python · PAN-OS API · Palo Alto Networks</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> 2024 – 2025</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Automated security policy deployment and NAT rule configuration via PAN-OS XML API.</li>
+            <li><i class="fas fa-circle"></i>Built Python scripts to bulk-push address objects, service groups, and security profiles.</li>
+            <li><i class="fas fa-circle"></i>Reduced manual config time significantly across lab environments.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">PAN-OS API</span><span class="tag">NGFW</span><span class="tag">Automation</span>
+          </div>
+          <a href="https://github.com/Abdelrhman2371999" class="btn btn-primary" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+        </div>
+
+        <!-- Project 2 — F5 iRules -->
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-code-branch"></i></div>
+          <div class="card-title">F5 BIG-IP iRules Collection</div>
+          <div class="card-company">Tcl · F5 BIG-IP LTM / GTM</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> 2024 – 2025</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Custom iRules for advanced traffic steering, header manipulation, and SSL offloading.</li>
+            <li><i class="fas fa-circle"></i>iRule for geo-based load balancing using GTM wide-IPs and DNSSEC validation.</li>
+            <li><i class="fas fa-circle"></i>Logging and alerting iRules for real-time DDoS detection on LTM virtual servers.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Tcl</span><span class="tag">iRules</span><span class="tag">F5 LTM</span><span class="tag">GTM</span><span class="tag">DDoS</span>
+          </div>
+          <a href="https://github.com/Abdelrhman2371999" class="btn btn-primary" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+        </div>
+
+        <!-- Project 3 — Network Scanner -->
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-magnifying-glass-chart"></i></div>
+          <div class="card-title">Python Network Recon Tool</div>
+          <div class="card-company">Python · Scapy · Nmap API</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> 2024</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Lightweight CLI tool for subnet discovery, open port enumeration, and OS fingerprinting.</li>
+            <li><i class="fas fa-circle"></i>Outputs structured JSON/CSV reports for integration into SOC ticketing workflows.</li>
+            <li><i class="fas fa-circle"></i>Supports multi-threaded scanning for faster results on large IP ranges.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">Scapy</span><span class="tag">Nmap</span><span class="tag">SOC</span><span class="tag">Recon</span>
+          </div>
+          <a href="https://github.com/Abdelrhman2371999" class="btn btn-primary" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+        </div>
+
+        <!-- Project 4 — Autonomous Car -->
+        <div class="neo-card">
+          <div class="timeline-dot"></div>
+          <div class="card-icon"><i class="fas fa-car-side"></i></div>
+          <div class="card-title">Level-3 Autonomous Automotive Car</div>
+          <div class="card-company">Graduation Project · Embedded C · ARM Cortex · RTOS</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> 2022 · <span style="color:var(--green);">Summa Cum Laude</span></div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Designed and implemented a Level-3 self-driving car with obstacle avoidance, lane detection, and auto-parking.</li>
+            <li><i class="fas fa-circle"></i>Programmed ARM Cortex-M microcontroller with FreeRTOS for real-time task scheduling.</li>
+            <li><i class="fas fa-circle"></i>Integrated ultrasonic, IR, and camera sensors with custom embedded C drivers.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Embedded C</span><span class="tag">ARM Cortex</span><span class="tag">FreeRTOS</span><span class="tag">Sensors</span><span class="tag">Python</span>
+          </div>
+        </div>
+
+        <!-- Project 5 — Container Security Lab -->
+        <div class="neo-card">
+          <div class="card-icon"><i class="fas fa-shield-virus"></i></div>
+          <div class="card-title">Kaspersky Container Security Lab</div>
+          <div class="card-company">KL-044 · Docker · Kubernetes · Kaspersky KSC</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> 2024 – 2025</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Set up containerized lab environment to simulate container escape and lateral movement attacks.</li>
+            <li><i class="fas fa-circle"></i>Configured Kaspersky Container Security policies and image scanning pipelines.</li>
+            <li><i class="fas fa-circle"></i>Documented findings aligned with KL-044 certification lab exercises.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">KL-044</span><span class="tag">Container Security</span>
+          </div>
+          <a href="https://github.com/Abdelrhman2371999" class="btn btn-primary" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+        </div>
+
+        <!-- Project 6 — Python Teaching Curriculum -->
+        <div class="neo-card">
+          <div class="card-icon"><i class="fab fa-python"></i></div>
+          <div class="card-title">Python Beginner Curriculum</div>
+          <div class="card-company">Education · Maadi Library · DECI</div>
+          <div class="date-chip"><i class="far fa-calendar"></i> 2024 – 2025</div>
+          <hr class="card-divider">
+          <ul class="list-bullet">
+            <li><i class="fas fa-circle"></i>Designed a 10-session beginner Python curriculum with hands-on mini-projects.</li>
+            <li><i class="fas fa-circle"></i>Covered variables, loops, functions, file I/O, and basic automation scripts.</li>
+            <li><i class="fas fa-circle"></i>Delivered to 500+ students across Maadi Library and DECI programs.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">Curriculum Design</span><span class="tag">Teaching</span><span class="tag">Automation</span>
+          </div>
+          <a href="https://www.linkedin.com/in/abdelrhmanhamed/recent-activity/all/" class="btn btn-secondary" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Posts</a>
+        </div>
+
+      </div>
+
+      <!-- Bottom note -->
+      <div style="margin-top:1.4rem; padding: 1rem 1.4rem; background: rgba(0,210,255,0.04); border: 1px solid var(--border); border-radius: 14px; font-size:0.78rem; color:var(--muted); text-align:center;">
+        <i class="fas fa-info-circle" style="color:var(--cyan); margin-right:0.4rem;"></i>
+        More projects and lab write-ups are being added continuously. Star the GitHub repo to stay updated.
+      </div>
+    </div>
+
   </main>
 </div>
 
 <script>
+// ── MOBILE DRAWER ──
+function toggleDrawer() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('drawerOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = sidebar.classList.contains('drawer-open');
+  if (isOpen) {
+    closeDrawer();
+  } else {
+    sidebar.classList.add('drawer-open');
+    overlay.classList.add('open');
+    btn.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeDrawer() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('drawerOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  sidebar.classList.remove('drawer-open');
+  overlay.classList.remove('open');
+  btn.classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close drawer when tab is switched on mobile
+const origSwitchTab = window.switchTab;
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 900) closeDrawer();
+  });
+});
+
+// ── VISITOR COUNTER ──
+(function() {
+  const key = 'cv_visit_count';
+  let count = parseInt(localStorage.getItem(key) || '0', 10);
+  count += 1;
+  localStorage.setItem(key, count);
+  document.getElementById('visitorCount').textContent = count.toLocaleString();
+})();
+
+// ── PHONE POPUP ──
+function openPhonePopup(displayNumber, digitsOnly) {
+  document.getElementById('popupNumber').textContent = displayNumber;
+  document.getElementById('popupCallBtn').href = 'tel:+' + digitsOnly;
+  document.getElementById('popupWaBtn').href = 'https://wa.me/' + digitsOnly;
+  document.getElementById('phonePopup').classList.add('open');
+}
+
+function closePhonePopup(event) {
+  if (!event || event.target === document.getElementById('phonePopup')) {
+    document.getElementById('phonePopup').classList.remove('open');
+  }
+}
+
+// Close popup on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.getElementById('phonePopup').classList.remove('open');
+});
+
+// ── TAB SWITCHING ──
 function switchTab(e, id) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -799,7 +1357,7 @@ function animateSkills() {
   }, 80);
 }
 
-// Mouse glow effect
+// ── MOUSE GLOW EFFECT ──
 document.querySelectorAll('.neo-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
@@ -810,70 +1368,91 @@ document.querySelectorAll('.neo-card').forEach(card => {
   });
 });
 
-// Particle canvas
+// ── PARTICLE CANVAS — performance-aware ──
 const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
-let W, H, particles = [];
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth <= 900;
 
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
+if (prefersReducedMotion) {
+  // Completely skip canvas if user prefers reduced motion
+  canvas.style.display = 'none';
+} else {
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
 
-class Particle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.r = Math.random() * 1.2 + 0.3;
-    this.vx = (Math.random() - 0.5) * 0.2;
-    this.vy = (Math.random() - 0.5) * 0.2;
-    this.alpha = Math.random() * 0.4 + 0.05;
-    this.color = Math.random() > 0.6 ? '0,210,255' : '124,58,237';
+  // Fewer particles on mobile to save CPU/battery
+  const PARTICLE_COUNT = isMobile ? 40 : 120;
+  const LINE_DIST      = isMobile ? 70 : 90;
+  const DRAW_LINES     = !isMobile; // skip line-drawing on mobile (O(n²) is heavy)
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
-  update() {
-    this.x += this.vx; this.y += this.vy;
-    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
-    ctx.fill();
-  }
-}
+  resize();
+  window.addEventListener('resize', () => {
+    resize();
+    // Re-check mobile flag on resize (orientation change etc.)
+  });
 
-for (let i = 0; i < 120; i++) particles.push(new Particle());
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x     = Math.random() * W;
+      this.y     = Math.random() * H;
+      this.r     = Math.random() * 1.2 + 0.3;
+      this.vx    = (Math.random() - 0.5) * (isMobile ? 0.12 : 0.2);
+      this.vy    = (Math.random() - 0.5) * (isMobile ? 0.12 : 0.2);
+      this.alpha = Math.random() * 0.4 + 0.05;
+      this.color = Math.random() > 0.6 ? '0,210,255' : '124,58,237';
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+      ctx.fill();
+    }
+  }
 
-function drawLines() {
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 90) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(0,210,255,${0.05 * (1 - dist/90)})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+  function drawLines() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < LINE_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,210,255,${0.05 * (1 - dist/LINE_DIST)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
       }
     }
   }
+
+  // Throttle on mobile: only render every 2nd frame to halve GPU load
+  let frameCount = 0;
+  function loop() {
+    frameCount++;
+    if (!isMobile || frameCount % 2 === 0) {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      if (DRAW_LINES) drawLines();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
 }
 
-function loop() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => { p.update(); p.draw(); });
-  drawLines();
-  requestAnimationFrame(loop);
-}
-loop();
-
-// Avatar image fallback
+// ── AVATAR IMAGE FALLBACK ──
 const avatarImg = document.querySelector('.avatar-inner img');
 if (avatarImg) {
   avatarImg.addEventListener('error', function() {
@@ -883,7 +1462,7 @@ if (avatarImg) {
   });
 }
 
-// Card entrance animation
+// ── CARD ENTRANCE ANIMATION ──
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
